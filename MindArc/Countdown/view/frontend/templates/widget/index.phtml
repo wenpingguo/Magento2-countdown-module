@@ -1,0 +1,135 @@
+<?php
+$countdown_title = $block->getData('countdown_title');
+$countdown_sub_title = $block->getData('countdown_subtitle');
+$countdown_link_url=$block->getData('countdown_link_url');
+$start_date = $block->getData('start_date');
+$end_date = $block->getData('end_date');
+$default_title = $block->getData('default_title');
+$default_sub_title = $block->getData('default_subtitle');
+$default_link_url=$block->getData('default_link_url');
+$background_colour=$block->getData('background_colour');
+$text_colour=$block->getData('text_colour');
+$widgetID = "id_".substr(md5(mt_rand()), 0, 9);
+$initialWidget = false;
+if($start_date&&$end_date){
+    $initialWidget=true;
+}
+?>
+<?php if($initialWidget):?>
+    <div class="countdown-container <?php echo $widgetID;?> countdown-widget countdown-initial">
+        <?php if($countdown_title): ?>
+            <h5 class="banner-title"><?php echo $countdown_title; ?></h5>
+        <?php endif; ?>
+        <?php if($countdown_link_url): ?>
+        <a href="<?php echo $countdown_link_url?>">
+            <?php endif; ?>
+            <div class="banner-subtitle text-uppercase">
+                <?php if($countdown_sub_title): ?>
+                    <span><?php echo $countdown_sub_title; ?></span>
+                    <span class="countdown"></span>
+                <?php endif; ?>
+            </div>
+            <?php if($countdown_link_url): ?>
+        </a>
+       <?php endif; ?>
+    </div>
+<?php endif;?>
+
+<div class="countdown-container <?php echo $widgetID;?> default <?php if($initialWidget){echo "countdown-initial";} ?>">
+    <?php if($default_title): ?>
+        <h5 class="banner-title"><?php echo $default_title; ?></h5>
+    <?php endif; ?>
+    <?php if($default_link_url): ?>
+    <a href="<?php echo $default_link_url?>">
+        <?php endif; ?>
+        <div class="banner-subtitle text-uppercase">
+            <?php if($default_sub_title): ?>
+                <span><?php echo $default_sub_title; ?></span>
+            <?php endif; ?>
+        </div>
+        <?php if($default_link_url): ?>
+    </a>
+<?php endif; ?>
+</div>
+<style>
+
+    <?php if($background_colour):?>
+     .ally-full-width-promo-header-wrapper .countdown-container.<?php echo $widgetID;?> .countdown{
+        background: <?php echo $background_colour?>;
+    }
+    <?php endif;?>
+
+    <?php if($text_colour):?>
+     .ally-full-width-promo-header-wrapper .countdown-container.<?php echo $widgetID;?> .countdown{
+        color: <?php echo $text_colour?>;
+    }
+    <?php endif;?>
+
+</style>
+
+<?php if($initialWidget):?>
+    <script>
+        require([
+            'jquery'
+        ], function ($) {
+            // Set start and end date date format e.g. 2019-01-20 15:37:25
+            // yyyy-MM-dd isn't an officially supported format for Date constructor, need to change to yyyy/MM/dd
+            // https://stackoverflow.com/questions/4310953/invalid-date-in-safari
+            var startDate = new Date("<?php echo $start_date; ?>".replace(/-/g, "/")).getTime();
+            var endDate = new Date("<?php echo $end_date; ?>".replace(/-/g, "/")).getTime();
+            var now = new Date().getTime();
+            if(now>startDate && now < endDate){
+                $(".countdown-container.<?php echo $widgetID;?>.countdown-widget").show();
+            }else{
+                $(".countdown-container.<?php echo $widgetID;?>.default").show();
+            }
+
+            $(document).ready(function () {
+                // Update the count down every 1 second
+                var countdownInterval = setInterval(function() {
+                    // Get todays date and time
+                    now = new Date().getTime();
+                    if(now>startDate && now<endDate){
+                        $(".countdown-container.<?php echo $widgetID;?>.default").hide();
+                        $(".countdown-container.<?php echo $widgetID;?>.countdown-widget").show();
+                        // Find the distance between now and the count down date
+                        var distance = endDate - now;
+                        // Time calculations for days, hours, minutes and seconds
+                        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                        var result = "";
+                        if(days>0){
+                            days=days + "d ";
+                        }else{
+                            days="";
+                        };
+                        if(hours<10){
+                            hours="0"+hours;
+                        }
+                        if(minutes<10){
+                            minutes="0"+minutes;
+                        }
+                        if(seconds<10){
+                            seconds="0"+seconds;
+                        }
+
+                        result = days + hours + "h " + minutes + "m " + seconds + "s ";
+                        // Display the result in the element with id="countdown"
+                        $(".countdown-container.<?php echo $widgetID;?>.countdown-widget .countdown").each(function () {
+                            $(this).text(result);
+                        });
+                    }else{
+                        // count not schedule to start
+                        $(".countdown-container.<?php echo $widgetID;?>.countdown-widget").hide();
+                        $(".countdown-container.<?php echo $widgetID;?>.default").show();
+                    }
+                    if(now>endDate){
+                        clearInterval(countdownInterval);
+                    }
+                }, 1000);
+            });
+        });
+    </script>
+<?php endif; ?>

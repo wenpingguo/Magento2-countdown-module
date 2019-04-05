@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:helloworld:Magento_Widget:etc/widget.xsd">
+    <widget class="MindArc\Countdown\Block\Widget\Index" id="mindarc_countdown_index">
+        <label>MindArc Countdown</label>
+        <description>Countdown</description>
+        <parameters>
+            <parameter name="countdown_title" sort_order="10" visible="true" xsi:type="text">
+                <label>Countdown Title</label>
+            </parameter>
+            <parameter name="countdown_subtitle" sort_order="20" visible="true" xsi:type="text">
+                <label>Countdown Subtitle</label>
+            </parameter>
+            <parameter name="countdown_link_url" sort_order="30" visible="true" xsi:type="text">
+                <label>Countdown Link url</label>
+            </parameter>
+            <parameter name="start_date" sort_order="40" visible="true" xsi:type="text">
+                <label>Start Date</label>
+                <description>(format: YYYY-MM-DD HH:MM:SS. e.g.2018-01-22 15:30:45)</description>
+            </parameter>
+            <parameter name="end_date" sort_order="50" visible="true" xsi:type="text">
+                <label>End Date </label>
+                <description>(format: YYYY-MM-DD HH:MM:SS. e.g.2018-01-22 15:30:45)</description>
+            </parameter>
+            <parameter name="default_title" sort_order="60" visible="true" xsi:type="text">
+                <label>Default Title</label>
+            </parameter>
+            <parameter name="default_subtitle" sort_order="70" visible="true" xsi:type="text">
+                <label>Default Subtitle</label>
+            </parameter>
+            <parameter name="default_link_url" sort_order="80" visible="true" xsi:type="text">
+                <label>Default Link url</label>
+            </parameter>
+            <parameter name="background_colour" sort_order="90" visible="true" xsi:type="text">
+                <label>Countdown background colour </label>
+                <description>(hex colour code e.g. #ffffff)</description>
+            </parameter>
+            <parameter name="text_colour" sort_order="100" visible="true" xsi:type="text">
+                <label>Countdown text colour</label>
+                <description>(hex colour code e.g. #000000)</description>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>
